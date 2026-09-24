@@ -82,9 +82,15 @@ T2D_lncRNA_Standalone/
 
 ```bash
 # from WSL, project lives at /mnt/d/T2D_lncRNA_Standalone
-bash setup_env.sh   # creates venv/ with pandas, numpy, scipy, scikit-learn, etc.
+bash setup_env.sh   # creates venv/, installs requirements.txt (pinned versions)
 source venv/bin/activate
 ```
+
+Dependencies are pinned in [`requirements.txt`](requirements.txt) to the exact
+versions used to generate the committed results (Python 3.10.12). Only six
+packages are actually imported by the pipeline (pandas, numpy, scipy,
+statsmodels, matplotlib, requests) — the rest of the file pins their resolved
+transitive dependencies for byte-for-byte reproducibility.
 
 ### 2. Download raw data
 
@@ -144,6 +150,10 @@ rerun `04b_motif_scan_remaining.py` for the missing genes and it will backfill t
 - **Promoter motif scanning** uses HOCOMOCO v11 (Kulakovskiy et al.), scoring against
   each motif's own maximum-achievable PWM score (≥85% threshold) across both
   strands of a -2000/+200 bp window around each gene's annotated TSS.
+
+## License
+
+MIT License — see [LICENSE](LICENSE) for details.
 
 ## Author
 
