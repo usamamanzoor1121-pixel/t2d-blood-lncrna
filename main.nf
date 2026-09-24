@@ -108,16 +108,40 @@ process MOTIF_ANALYSIS {
     """
 }
 
+process GENERATE_FIGURES {
+    publishDir "${params.outdir}/figures", mode: 'copy'
+    input:
+        path script
+        path meta_all
+    output:
+        path "Fig1_cohort_overview.png"
+        path "Fig2_volcano.png"
+        path "Fig3_concordance_heatmap.png"
+        path "Fig4_qqplot.png"
+    script:
+    """
+    TASKDIR=\$PWD
+    cd ${params.projectDir}
+    python3 ${script}
+    cp data/figures/Fig1_cohort_overview.png \$TASKDIR/
+    cp data/figures/Fig2_volcano.png \$TASKDIR/
+    cp data/figures/Fig3_concordance_heatmap.png \$TASKDIR/
+    cp data/figures/Fig4_qqplot.png \$TASKDIR/
+    """
+}
+
 workflow {
     ref_script    = file("${params.projectDir}/00_fetch_reference.py")
     parse_script  = file("${params.projectDir}/01_parse_cohorts.py")
     meta_script   = file("${params.projectDir}/02_meta_analysis_deg.py")
     report_script = file("${params.projectDir}/03_report_top_hits.py")
     motif_script  = file("${params.projectDir}/04_motif_analysis.py")
+    figures_script = file("${params.projectDir}/05_generate_figures.py")
 
     (biotypes, symbols) = FETCH_REFERENCE(ref_script)
     marker = PARSE_COHORTS(parse_script, biotypes, symbols)
     (meta_all, meta_lnc, meta_pc, per_cohort) = META_ANALYSIS(meta_script, marker)
     report_marker = TOP_HITS_REPORT(report_script, meta_all, meta_lnc, meta_pc)
     MOTIF_ANALYSIS(motif_script, report_marker)
+    GENERATE_FIGURES(figures_script, meta_all)
 }

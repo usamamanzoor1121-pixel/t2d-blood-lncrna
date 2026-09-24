@@ -6,6 +6,13 @@ of 8 public T2D whole-blood cohorts — by (a) adding a genome-wide lncRNA-speci
 layer they did not cover, and (b) cross-checking Wang et al. 2026 (PLOS One)'s
 proposed 3-lncRNA blood biomarker panel.
 
+## Figures
+
+- **Fig 1** — [`data/figures/Fig1_cohort_overview.png`](data/figures/Fig1_cohort_overview.png): sample sizes per cohort.
+- **Fig 2** — [`data/figures/Fig2_volcano.png`](data/figures/Fig2_volcano.png): meta-analysis volcano plot, coloured by GENCODE biotype, top 8 nominal hits labelled.
+- **Fig 3** — [`data/figures/Fig3_concordance_heatmap.png`](data/figures/Fig3_concordance_heatmap.png): per-cohort log₂FC for the top 15 candidates — the visual case for cross-cohort directional concordance despite no FDR-significant hits.
+- **Fig 4** — [`data/figures/Fig4_qqplot.png`](data/figures/Fig4_qqplot.png): p-value calibration (QQ plot), genomic inflation λ=1.08 — confirms the null result reflects real absence of signal, not broken statistics (no systematic inflation or deflation).
+
 ## Cohorts (all 8 processed)
 
 | Accession | n T2D | n Control | Notes |

@@ -163,28 +163,31 @@ def run_meta_analysis(min_studies: int = 3):
     _, padj, _, _ = multipletests(meta_df["pvalue_meta"], method="fdr_bh")
     meta_df["padj_meta"] = padj
     meta_df = meta_df.sort_values("padj_meta")
+
+    # Merge biotype (lncRNA vs protein-coding, GENCODE reference) BEFORE saving,
+    # so "all_genes" and the biotype-split files are always consistent.
+    biotype_path = REF / "gene_biotypes.csv"
+    if biotype_path.exists():
+        biotypes = pd.read_csv(biotype_path, index_col=0)["gene_biotype"]
+        meta_df["biotype"] = meta_df.index.map(biotypes)
+    else:
+        log.warning("No biotype reference found — run 00_fetch_reference.py first")
+        meta_df["biotype"] = pd.NA
+
     meta_df.to_csv(OUT / "meta_analysis_deg_all_genes.csv")
 
     n_sig = (meta_df["padj_meta"] < 0.05).sum()
     log.info(f"Meta-analysis significant genes (padj<0.05, all biotypes): {n_sig:,} / {len(meta_df):,}")
 
-    # Split by biotype (lncRNA vs protein-coding) using GENCODE reference
-    biotype_path = REF / "gene_biotypes.csv"
-    if biotype_path.exists():
-        biotypes = pd.read_csv(biotype_path, index_col=0)["gene_biotype"]
-        meta_df["biotype"] = meta_df.index.map(biotypes)
+    lnc = meta_df[meta_df["biotype"] == "lncRNA"]
+    pc = meta_df[meta_df["biotype"] == "protein_coding"]
+    lnc.to_csv(OUT / "meta_analysis_deg_lncRNA.csv")
+    pc.to_csv(OUT / "meta_analysis_deg_protein_coding.csv")
 
-        lnc = meta_df[meta_df["biotype"] == "lncRNA"]
-        pc = meta_df[meta_df["biotype"] == "protein_coding"]
-        lnc.to_csv(OUT / "meta_analysis_deg_lncRNA.csv")
-        pc.to_csv(OUT / "meta_analysis_deg_protein_coding.csv")
-
-        log.info(f"lncRNA genes in meta-analysis: {len(lnc):,}, "
-                 f"significant (padj<0.05): {(lnc['padj_meta']<0.05).sum():,}")
-        log.info(f"Protein-coding genes in meta-analysis: {len(pc):,}, "
-                 f"significant (padj<0.05): {(pc['padj_meta']<0.05).sum():,}")
-    else:
-        log.warning("No biotype reference found — run 00_fetch_reference.py first")
+    log.info(f"lncRNA genes in meta-analysis: {len(lnc):,}, "
+             f"significant (padj<0.05): {(lnc['padj_meta']<0.05).sum():,}")
+    log.info(f"Protein-coding genes in meta-analysis: {len(pc):,}, "
+             f"significant (padj<0.05): {(pc['padj_meta']<0.05).sum():,}")
 
     return meta_df
 
