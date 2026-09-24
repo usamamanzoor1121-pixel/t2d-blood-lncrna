@@ -29,10 +29,11 @@ process FETCH_REFERENCE {
         path "ensembl_to_symbol.csv"
     script:
     """
+    TASKDIR=\$PWD
     cd ${params.projectDir}
     python3 ${script}
-    cp data/reference/gene_biotypes.csv .
-    cp data/reference/ensembl_to_symbol.csv .
+    cp data/reference/gene_biotypes.csv \$TASKDIR/
+    cp data/reference/ensembl_to_symbol.csv \$TASKDIR/
     """
 }
 
@@ -45,9 +46,10 @@ process PARSE_COHORTS {
         path "processed_marker.txt"
     script:
     """
+    TASKDIR=\$PWD
     cd ${params.projectDir}
     python3 ${script}
-    touch processed_marker.txt
+    touch \$TASKDIR/processed_marker.txt
     """
 }
 
@@ -63,12 +65,13 @@ process META_ANALYSIS {
         path "per_cohort_deg_all.csv"
     script:
     """
+    TASKDIR=\$PWD
     cd ${params.projectDir}
     python3 ${script}
-    cp data/tables/meta_analysis_deg_all_genes.csv .
-    cp data/tables/meta_analysis_deg_lncRNA.csv .
-    cp data/tables/meta_analysis_deg_protein_coding.csv .
-    cp data/tables/per_cohort_deg_all.csv .
+    cp data/tables/meta_analysis_deg_all_genes.csv \$TASKDIR/
+    cp data/tables/meta_analysis_deg_lncRNA.csv \$TASKDIR/
+    cp data/tables/meta_analysis_deg_protein_coding.csv \$TASKDIR/
+    cp data/tables/per_cohort_deg_all.csv \$TASKDIR/
     """
 }
 
@@ -82,9 +85,10 @@ process TOP_HITS_REPORT {
         path "report_done.txt"
     script:
     """
+    TASKDIR=\$PWD
     cd ${params.projectDir}
     python3 ${script}
-    touch report_done.txt
+    touch \$TASKDIR/report_done.txt
     """
 }
 
@@ -97,9 +101,10 @@ process MOTIF_ANALYSIS {
         path "promoter_motif_hits.csv"
     script:
     """
+    TASKDIR=\$PWD
     cd ${params.projectDir}
     python3 ${script}
-    cp data/tables/promoter_motif_hits.csv .
+    cp data/tables/promoter_motif_hits.csv \$TASKDIR/
     """
 }
 
