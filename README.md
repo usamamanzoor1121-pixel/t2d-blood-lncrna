@@ -15,9 +15,7 @@ the start (not a correction of prior fabricated results).
 
 ## Results
 
-See **[`RESULTS_SUMMARY.md`](RESULTS_SUMMARY.md)** for the technical write-up, or
-**[`Manuscript.docx`](Manuscript.docx)** for a manuscript-style version (Abstract
-through Discussion, ~2,600 words, with the same real numbers). Headline:
+See **[`RESULTS_SUMMARY.md`](RESULTS_SUMMARY.md)** for the full write-up. Headline:
 
 - **466 real samples** (244 T2D, 222 Control) pooled across 8 independent public GEO
   cohorts spanning 4+ countries, after excluding TB-comorbidity confounds,

@@ -10,3 +10,4 @@ logs_*.txt
 .nextflow*
 work/
 nextflow
+Manuscript.docx
