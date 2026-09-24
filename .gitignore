@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+*.pyc
+data/raw/
+data/reference/*.gtf.gz
+data/reference/*.tar
+data/reference/promoter_*.fa
+data/reference/query_result.json
+logs_*.txt
+.nextflow*
+work/
+nextflow
